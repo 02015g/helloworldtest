@@ -1,0 +1,20 @@
+server:
+  port: 8025
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    username: yourusername
+    password: yourpassword
+    url: jdbc:mysql://localhost:3306/yourschema
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
