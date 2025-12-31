@@ -10,5 +10,5 @@ import jakarta.servlet.http.HttpServletRequest;
 * @createDate 2025-12-30 14:01:38
 */
 public interface UserService extends IService<User> {
-      public User userLogin(String username, String password, HttpServletRequest request);
+      User userLogin(String username, String password, HttpServletRequest request);
 }

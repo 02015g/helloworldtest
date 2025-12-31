@@ -11,7 +11,6 @@ import com.g01502.exam.mapper.UserMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 /**
 * @author guolebin
@@ -28,10 +27,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (StrUtil.hasBlank(userName, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
-        String encryptPassword = getEncryptPassword(userPassword);
+        // 直接使用原始密码，不进行加密
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userName);
-        queryWrapper.eq("password", encryptPassword);
+        queryWrapper.eq("password", userPassword);
         User user = this.baseMapper.selectOne(queryWrapper);
         if (user == null) {
             log.info("user login failed, userAccount cannot match userPassword");
@@ -39,11 +38,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         request.getSession().setAttribute("userlogin", user);
         return user;
-    }
-    public String getEncryptPassword(String userPassword) {
-        // 盐值，混淆密码
-        final String SALT = "glb";
-        return DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
     }
 }
 

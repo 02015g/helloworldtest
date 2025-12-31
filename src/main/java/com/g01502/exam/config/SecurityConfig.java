@@ -1,7 +1,5 @@
 package com.g01502.exam.config;
 
-import com.g01502.exam.mapper.UserMapper;
-import com.g01502.exam.service.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public UserDetailsService userDetailsService(UserMapper userMapper) {
-        return new UserDetailsServiceImpl(userMapper);
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
-        return new Md5PasswordEncoder();
+        return new PlainPasswordEncoder();
     }
 
     @Bean
@@ -48,7 +41,9 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .formLogin(formLogin -> formLogin.disable())
-            .httpBasic(httpBasic -> {});
+            .httpBasic(httpBasic -> {})
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
     }

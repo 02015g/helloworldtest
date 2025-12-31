@@ -37,7 +37,10 @@ public class HelloWorldController {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
+        // 设置认证信息到 SecurityContext
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 保存 SecurityContext 到 session
+        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         
         // 通过用户名密码登录（可以使用用户名 test，密码 123456）
         String userName = user.getUsername();
